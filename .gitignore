@@ -1,0 +1,16 @@
+_site
+.sass-cache
+Gemfile.lock
+*.gem
+.jekyll-cache
+.jekyll-cache
+*~
+*__pycache__*
+/.vscode*
+src.egg-info/*
+tracr.egg-info/*
+venv/*
+data/*
+CONTRIBUTING.md
+LICENSE
+build/*
