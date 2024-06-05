@@ -167,6 +167,108 @@ def make_join(vocab_size, dataset_size, min_length=4, max_length=16, seed=0):
     
     return pd.DataFrame({"sent": sents, "tags": tags})
 
+def make_join_smaller(vocab_size, dataset_size, min_length=4, max_length=16, seed=0):
+    # Specified vocabulary of three discrete values
+    vocab = [60000, 75000, 80000]
+    
+    np.random.seed(seed)
+    sents, tags = [], []
+    
+    for _ in range(dataset_size):
+        # Generate a sentence of salaries from the given vocabulary
+        sentence_length = np.random.randint(min_length, max_length+1)
+        sent = np.random.choice(vocab, size=sentence_length).tolist()
+        
+        # Generate exactly sentence_length random bonus indices
+        bonus_indices = np.random.randint(0, sentence_length, size=sentence_length).tolist()
+        
+        # Calculate new salaries based on bonus counts
+        bonus_counts = np.bincount(bonus_indices, minlength=sentence_length)
+        new_salaries = [salary + bonus_counts[idx] * 5000 for idx, salary in enumerate(sent)]
+        
+        # Convert all elements to strings
+        sent_str = list(map(str, sent + bonus_indices))
+        tags_str = list(map(str, new_salaries + bonus_indices))
+
+        # Combine salaries and bonus indices for "sent" and "tags"
+        sents.append([BOS] + sent_str + [EOS])
+        tags.append([PAD] + tags_str + [PAD])
+    
+    return pd.DataFrame({"sent": sents, "tags": tags})
+
+def make_distinct(vocab_size, dataset_size, min_length=4, max_length=16, seed=0):
+    np.random.seed(seed)
+    sents, tags = [], []
+    
+    BOS, EOS, PAD = '<BOS>', '<EOS>', '<PAD>'
+
+    for _ in range(dataset_size):
+        # Generate a sequence with random length
+        sequence_length = np.random.randint(min_length, max_length + 1)
+        
+        # Initialize the sequence with the first number within vocab_size range
+        sequence = [1]
+        
+        # Generate the rest of the sequence randomly but sequentially
+        for _ in range(sequence_length - 1):
+            next_number = sequence[-1] + np.random.choice([0, 1])
+            if next_number > vocab_size:
+                break
+            sequence.append(next_number)
+
+        # Adjust sequence length if needed
+        sequence = sequence[:sequence_length]
+        
+        # Find the largest number in the sequence
+        largest_number = max(sequence)
+        
+        # Convert all elements to strings
+        sequence_str = list(map(str, sequence))
+        largest_str = [str(largest_number)] * sequence_length
+        
+        # Combine sequence for "sent" and "tags"
+        sents.append([BOS] + sequence_str + [EOS])
+        tags.append([PAD] + largest_str + [PAD])
+    
+    return pd.DataFrame({"sent": sents, "tags": tags})
+
+def make_where(vocab_size, dataset_size, min_length=4, max_length=16, seed=0):
+    np.random.seed(seed)
+    sents, tags = [], []
+
+    names = ['1', '2', '3', '4', '5']
+    departments = ['6', '7', '8', '9', '6']
+
+    for _ in range(dataset_size):
+        # Randomly shuffle the names and departments
+        shuffled_names = np.random.permutation(names).tolist()
+        
+        # Ensure at least one '6' is in the shuffled departments
+        while True:
+            shuffled_departments = np.random.permutation(departments).tolist()
+            if '6' in shuffled_departments:
+                break
+        
+        # Combine the names and departments into a single list
+        combined = shuffled_names + shuffled_departments
+        
+        # Initialize the output list with '0'
+        output = ['0'] * 10
+        
+        # Assign the names to the corresponding "Sales" positions in the output list
+        for i in range(5, 10):
+            if shuffled_departments[i - 5] == '6':
+                output[i] = shuffled_names[i - 5]
+
+        # Verify both combined and output are sequences of length 10
+        if len(combined) != 10 or len(output) != 10:
+            continue
+
+        # Combine sequence for "sent" and "tags"
+        sents.append([BOS] + combined + [EOS])
+        tags.append([PAD] + output + [PAD])
+    
+    return pd.DataFrame({"sent": sents, "tags": tags})
 
 def make_most_freq(
     vocab_size, dataset_size, min_length=2, max_length=16, seed=0
@@ -654,6 +756,9 @@ def get_dataset(
         # SQL programs
         "aggregate": make_aggregate,
         "join": make_join,
+        "join_smaller": make_join_smaller,
+        "distinct": make_distinct,
+        "where": make_where,
     }
     if name not in fns:
         raise NotImplementedError(name)

@@ -1,0 +1,13 @@
+I 2024-05-24T12:39:55 __main__:655: args: {'output_dir': 'output/distinct', 'dataset': 'distinct', 'vocab_size': 12, 'dataset_size': 10000, 'min_length': 1, 'max_length': 15, 'seed': 0, 'do_lower': 0, 'unique': 1, 'replace_numbers': 0, 'n_vars_cat': 1, 'n_vars_num': 1, 'd_var': None, 'n_heads_cat': 2, 'n_heads_num': 0, 'd_mlp': 64, 'n_cat_mlps': 1, 'n_num_mlps': 0, 'mlp_vars_in': 2, 'n_layers': 2, 'sample_fn': 'gumbel_soft', 'one_hot_embed': True, 'count_only': True, 'selector_width': 0, 'attention_type': 'cat', 'rel_pos_bias': 'fixed', 'mlp_type': 'cat', 'autoregressive': False, 'glove_embeddings': 'data/glove.840B.300d.txt', 'do_glove': 0, 'unembed_mask': 1, 'pool_outputs': 0, 'standard': False, 'd_model': 64, 'd_head': None, 'n_heads': 2, 'dropout': 0.0, 'lr': 0.05, 'max_grad_norm': None, 'gumbel_samples': 1, 'n_epochs': 250, 'batch_size': 512, 'tau_init': 3.0, 'tau_end': 0.01, 'tau_schedule': 'geomspace', 'loss_agg': 'per_token', 'save': True, 'save_code': True, 'device': 'cuda'}
+I 2024-05-24T12:40:13 __main__:623: vocab size: 15
+I 2024-05-24T12:40:13 __main__:624: X_train: (8100, 17), Y_train, (8100, 17)
+I 2024-05-24T12:40:13 __main__:625: X_val: (900, 17), Y_val, (900, 17)
+I 2024-05-24T12:40:13 __main__:626: X_test: (1000, 17), Y_test, (1000, 17)
+I 2024-05-24T12:40:13 __main__:629: 8100/8100 unique training inputs
+I 2024-05-24T12:40:13 __main__:630: 1000/1000 unique test inputs not in train
+I 2024-05-24T12:43:20 __main__:452: train: loss=0.05223238840699196, acc=0.9828490385566806, metrics={}
+I 2024-05-24T12:43:20 __main__:452: val: loss=0.05433633551001549, acc=0.9819411414982164, metrics={}
+I 2024-05-24T12:43:21 __main__:452: test: loss=0.05251186713576317, acc=0.9848973016512284, metrics={}
+I 2024-05-24T12:43:21 __main__:469: saving model to output/distinct/model.pt
+I 2024-05-24T12:43:21 __main__:473: saving code to output/distinct
+I 2024-05-24T12:43:21 __main__:649: writing results to output/distinct/results.csv
