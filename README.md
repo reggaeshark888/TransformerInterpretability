@@ -1,10 +1,9 @@
-# Project Name
+# Transformer Interpretability
 
 This project aims to explore the use of transformer models for learning SQL programs. It includes the implementation of various SQL scenarios, dataset generation, and training of transformer models to understand and perform SQL tasks.
 
 ## Directory Structure
 
-- `code cel` - Contains the main code cells and scripts.
 - `experiments.ipynb` - Jupyter notebook with RASP-modeled SQL scenarios.
 - `src` - Directory containing code for learning transformer programs.
   - `data_utils` - Contains code for generating datasets for SQL learning.
